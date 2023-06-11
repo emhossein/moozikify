@@ -9,13 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-hooks-library/core": "^0.5.1",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
     "next": "13.4.4",
     "postcss": "8.4.24",
     "react": "18.2.0",
+    "react-audio-player": "^0.17.0",
     "react-dom": "18.2.0",
-    "tailwindcss": "3.3.2"
+    "react-spring": "^9.7.1",
+    "react-use-gesture": "^9.1.3",
+    "react-visibility-sensor": "^5.1.1",
+    "tailwindcss": "3.3.2",
+    "use-debounced-search": "^1.0.8",
+    "zustand": "^4.3.8"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0"
   }
 }
