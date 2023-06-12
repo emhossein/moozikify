@@ -5,4 +5,6 @@ export const useDataStore = create((set) => ({
   todaysHits: {},
   songData: {},
   songIndex: 0,
+  playlist: {},
+  songList: [],
 }));

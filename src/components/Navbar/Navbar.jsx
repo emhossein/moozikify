@@ -4,7 +4,7 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <div className="absolute bottom-0 h-14 w-[40vw]">
+    <div className="absolute bottom-0 h-14 w-full md:w-[40vw]">
       <div className="flex justify-around">
         <div className="rounded-full p-2 hover:cursor-pointer hover:bg-gray-700">
           <GenreIcon />

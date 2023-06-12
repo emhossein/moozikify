@@ -15,8 +15,8 @@ export const metadata = {
 
 function RootLayout({ children }) {
   return (
-    <html lang="en" className="flex items-center justify-center">
-      <body className={[inter.className, "w-full md:w-[40vw]"]}>
+    <html lang="en" className="flex w-screen items-center justify-center">
+      <body className={[inter.className]}>
         <header>
           <Navbar />
         </header>
