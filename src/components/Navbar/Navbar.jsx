@@ -1,19 +1,37 @@
+"use client";
+
 import { ChangeThemeIcon, GenreIcon, HomeIcon, SearchIcon } from "../Icons";
 
+import Link from "next/link";
 import React from "react";
+import { useDataStore } from "@/zustand/store";
 
 const Navbar = () => {
+  const { user } = useDataStore((state) => state);
+
   return (
-    <div className="absolute bottom-0 h-14 w-full md:w-[40vw]">
+    <div className="fixed bottom-0 h-14 w-full bg-black md:w-[40vw]">
       <div className="flex justify-around">
-        <div className="rounded-full p-2 hover:cursor-pointer hover:bg-gray-700">
+        <Link
+          href="/login"
+          className="aspect-square h-10 rounded-full p-2 hover:cursor-pointer hover:bg-gray-700"
+        >
           <GenreIcon />
-        </div>
-        <div className="rounded-full p-2 hover:cursor-pointer hover:bg-gray-700">
+        </Link>
+        <Link
+          href="/"
+          className="aspect-square h-10 rounded-full p-2 hover:cursor-pointer hover:bg-gray-700"
+        >
           <HomeIcon />
-        </div>
+        </Link>
         <div className="rounded-full p-2 hover:cursor-pointer hover:bg-gray-700">
-          <SearchIcon />
+          {user && (
+            <img
+              src={user?.images[0]?.url}
+              alt={user.display_name}
+              className="aspect-square w-8 rounded-full"
+            />
+          )}
         </div>
       </div>
     </div>

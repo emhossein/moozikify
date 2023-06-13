@@ -124,7 +124,7 @@ const Player = () => {
   return (
     <>
       {songData.result && (
-        <div className="absolute bottom-14 w-full md:w-[40vw]">
+        <div className="fixed bottom-14 mx-auto w-[95%] bg-neutral-800 p-1 md:w-[40vw] md:rounded-lg">
           <audio
             ref={audioRef}
             src={
@@ -136,18 +136,20 @@ const Player = () => {
             className="hidden"
           />
 
-          <div className="flex w-full items-center space-x-2 bg-black">
-            <div className="w-32">
+          <div className="flex w-full items-center space-x-2 ">
+            <div className="w-24">
               <img
-                src={songData.result?.thumbnail}
-                alt={songData.result?.title}
-                className="aspect-square w-full"
+                src={songList[songIndex].image}
+                alt={songList[songIndex].name}
+                className="aspect-square w-full md:rounded-lg"
+                loading="lazy"
               />
-              <p className="line-clamp-2 hidden text-sm md:block">
-                {songData.result?.title}
-              </p>
             </div>
             <div className="flex w-full flex-1 flex-col px-2">
+              <p className="line-clamp-2 text-sm">{songList[songIndex].name}</p>
+              <p className="mb-2 line-clamp-2 text-xs text-gray-500">
+                {songList[songIndex].artist.replace("undefined", "")}
+              </p>
               <div className="flex w-full justify-between">
                 <button
                   onClick={() =>

@@ -16,9 +16,10 @@ function HorizontalScrollView(props) {
         set({ x: -x, immediate: down });
       },
 
-      onWheelStart() {
-        // Stop any user-land scroll animation from confcliting with the browser
-        stop();
+      onWheelStart({ down, movement: [x], first, last, vxvy: [vx] }) {
+        if (first) isDragging.current = true;
+        if (last) setTimeout(() => (isDragging.current = false), 0);
+        set({ x: -x, immediate: down });
       },
     },
     {
