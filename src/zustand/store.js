@@ -9,4 +9,5 @@ export const useDataStore = create(() => ({
   token: "",
   user: null,
   isPlaying: false,
+  feedData: null,
 }));

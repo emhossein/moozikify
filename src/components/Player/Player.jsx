@@ -13,6 +13,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import PlayerSlider from "./PlayerSlider";
 import fetchSong from "@/utils/fetchSong";
+import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
 
 const Player = () => {
@@ -23,6 +24,7 @@ const Player = () => {
   const audioRef = useRef(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [historyId, setHistoryId] = useState("");
 
   const handlePlay = () => {
     audioRef.current.play();
@@ -79,6 +81,10 @@ const Player = () => {
       songData: result,
       songIndex: nextSongIndex,
     }));
+
+    await spotifyApi.addTracksToPlaylist(historyId, [
+      "spotify:track:" + songList[songIndex + 1].id,
+    ]);
   };
 
   const handleSeek = (e) => {
@@ -121,12 +127,11 @@ const Player = () => {
   }, [songIndex]);
 
   useEffect(() => {
-    if (songList) {
-      const history = JSON.parse(localStorage.getItem("history")) || [];
-      history.push(songList[songIndex]);
-      localStorage.setItem("history", JSON.stringify(history));
-    }
-  }, [songData]);
+    const id = localStorage.getItem("recentlyPlayedPlaylistId");
+    setHistoryId(id);
+
+    console.log(songList);
+  }, []);
 
   return (
     <>
@@ -144,13 +149,14 @@ const Player = () => {
           />
 
           <div className="flex items-center space-x-2 ">
-            <div className="hidden h-24 lg:block">
+            <div className="h-16 lg:h-24">
               <Image
                 fill
                 src={songList[songIndex].image}
                 alt={songList[songIndex].name}
                 className="unset | aspect-square w-full md:rounded-l-lg"
                 loading="lazy"
+                placeholder="empty"
               />
             </div>
             <div className="flex w-full flex-1 flex-col px-2">

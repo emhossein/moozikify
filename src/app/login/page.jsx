@@ -30,6 +30,8 @@ const Login = () => {
             Scopes.userLibraryRead,
             Scopes.userReadRecentlyPlayed,
             Scopes.userLibraryModify,
+            Scopes.playlistModifyPrivate,
+            Scopes.playlistModifyPublic,
           ]}
           onSuccess={onSuccess}
           onFailure={onFailure}

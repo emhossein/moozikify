@@ -1,11 +1,22 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+
 import HorizontalScrollView from "../HorizontalScrollView";
 import Image from "next/image";
-import React from "react";
 import fetchSong from "@/utils/fetchSong";
+import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
 
 const RecommendationFeed = ({ items }) => {
-  const handleClickItem = async (name, artist, index, list) => {
+  const [historyId, setHistoryId] = useState("");
+
+  useEffect(() => {
+    const id = localStorage.getItem("recentlyPlayedPlaylistId");
+    setHistoryId(id);
+  }, []);
+
+  const handleClickItem = async (name, artist, index, list, uri) => {
     const songList = await list.tracks.map((item) => ({
       name: item.name,
       artist: item.album.artists[0].name,
@@ -14,6 +25,7 @@ const RecommendationFeed = ({ items }) => {
       id: item.id,
     }));
 
+    await spotifyApi.addTracksToPlaylist(historyId, [uri]);
     const result = await fetchSong(name, artist);
     useDataStore.setState({ songData: result, songIndex: index, songList });
   };
@@ -34,7 +46,8 @@ const RecommendationFeed = ({ items }) => {
                     item.name,
                     item.album.artists[0].name,
                     index,
-                    items
+                    items,
+                    item.uri
                   )
                 }
                 className="hover:cursor-pointer"
