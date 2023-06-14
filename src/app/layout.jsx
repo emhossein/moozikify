@@ -18,7 +18,7 @@ function RootLayout({ children }) {
       className="flex w-screen items-center justify-center overflow-x-hidden"
     >
       <Head />
-      <body className={[inter.className, " mb-52 w-full md:w-[40vw]"]}>
+      <body className={[inter.className, " relative w-full md:w-[40vw]"]}>
         <header>
           <Navbar />
         </header>

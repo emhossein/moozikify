@@ -4,8 +4,11 @@ import React, { useEffect } from "react";
 
 import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
+import { useRouter } from "next/navigation";
 
 const User = ({ token }) => {
+  const router = useRouter();
+
   useEffect(() => {
     spotifyApi.setAccessToken(token);
 
@@ -15,6 +18,7 @@ const User = ({ token }) => {
         useDataStore.setState({ user, token });
       } catch (error) {
         console.log("An error occurred:", error);
+        router.push("/login");
       }
     };
 

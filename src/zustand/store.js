@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export const useDataStore = create((set) => ({
+export const useDataStore = create(() => ({
   todaysHits: {},
   songData: {},
   songIndex: 0,
@@ -8,4 +8,5 @@ export const useDataStore = create((set) => ({
   songList: [],
   token: "",
   user: null,
+  isPlaying: false,
 }));

@@ -19,19 +19,24 @@ const Login = () => {
   }
 
   return (
-    <div>
-      <SpotifyAuth
-        redirectUri={process.env.REDIRECT_URI}
-        clientID={process.env.CLIENT_ID}
-        scopes={[
-          Scopes.userReadEmail,
-          Scopes.userTopRead,
-          Scopes.userLibraryRead,
-          Scopes.userReadRecentlyPlayed,
-        ]}
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-      />
+    <div className="flex h-screen items-center justify-center">
+      <div className="rounded-lg hover:shadow-lg hover:shadow-[#1db95480]">
+        <SpotifyAuth
+          redirectUri={process.env.REDIRECT_URI}
+          clientID={process.env.CLIENT_ID}
+          scopes={[
+            Scopes.userReadEmail,
+            Scopes.userTopRead,
+            Scopes.userLibraryRead,
+            Scopes.userReadRecentlyPlayed,
+          ]}
+          onSuccess={onSuccess}
+          onFailure={onFailure}
+          title="Login with Spotify"
+          btnClassName="bg-brand px-4 py-2 rounded-lg flex items-center text-xl font-semibold space-x-2"
+          logoClassName="fill-white w-7"
+        />
+      </div>
     </div>
   );
 };

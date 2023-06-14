@@ -2,12 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 
-import Image from "next/image";
-import fetchSong from "@/utils/fetchSong";
-import { formatMs } from "@/utils/formatTime ";
+import Playlist from "@/components/Playlist";
+import { fetchColorDom } from "@/utils/fetchColorDom";
 import { getCookie } from "cookies-next";
 import { spotifyApi } from "@/utils/spotify";
-import { useDataStore } from "@/zustand/store";
 import { usePathname } from "next/navigation";
 
 const Page = () => {
@@ -16,24 +14,9 @@ const Page = () => {
 
   const token = getCookie("access_token");
 
+  const [colorData, setColorData] = useState(null);
   const [data, setData] = useState(null);
   const [playlist, setPlaylist] = useState(null);
-
-  console.log(playlist);
-
-  const handleClickItem = async (name, artist, index, list) => {
-    const songList = await list.tracks.items.map((item) => ({
-      name: item.track.name,
-      artist:
-        item.track.album.artists[0].name +
-        " " +
-        item.track.album.artists[1]?.name,
-      image: item.track.album.images[0].url,
-    }));
-
-    const result = await fetchSong(name, artist);
-    useDataStore.setState({ songData: result, songIndex: index, songList });
-  };
 
   useEffect(() => {
     spotifyApi.setAccessToken(token);
@@ -48,70 +31,26 @@ const Page = () => {
         console.log("An error occurred:", error);
       }
     };
+
     getData();
   }, []);
 
+  useEffect(() => {
+    const fetchColor = async () => {
+      try {
+        const data = await fetchColorDom(playlist.images[0].url);
+        setColorData(data);
+      } catch (error) {
+        console.error("Failed to fetch color data:", error);
+      }
+    };
+
+    fetchColor();
+  }, [playlist]);
+
   return (
-    <div className="w-full p-2">
-      {playlist && (
-        <>
-          <div className="mb-6 flex h-36 w-full space-x-2 overflow-hidden">
-            <div className="aspect-square w-36 overflow-hidden rounded-lg">
-              <Image
-                fill
-                src={playlist.images[0].url}
-                alt={playlist.name}
-                className="unset | aspect-square"
-              />
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold">{playlist.name}</h1>
-              <h3 className="text-sm">{playlist.description}</h3>
-              <p className="mt-2 text-xs text-gray-400">
-                {playlist.tracks.total} tracks
-              </p>
-            </div>
-          </div>
-          {playlist.tracks.items.map((item, index) => (
-            <div
-              key={item.id}
-              className="mx-auto mt-2 flex w-4/5 justify-between space-x-2 rounded-lg bg-neutral-700 p-2 hover:cursor-pointer hover:bg-opacity-70"
-              onClick={() =>
-                handleClickItem(
-                  item.track.name,
-                  item.track.artists[0].name,
-                  index,
-                  playlist
-                )
-              }
-            >
-              <div className="flex space-x-2">
-                <div className="h-10 w-10 overflow-hidden rounded-full ">
-                  <Image
-                    fill
-                    src={item.track.album.images[0].url}
-                    alt={item.track.name}
-                    className="unset | aspect-square"
-                  />
-                </div>
-                <div>
-                  <p className="text-base font-semibold">{item.track.name}</p>
-                  <div className="flex space-x-3">
-                    {item.track.artists.map((artist) => (
-                      <p key={artist} className="text-xs text-neutral-400">
-                        {artist.name}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <p className="self-center text-sm text-neutral-400">
-                {formatMs(item.track.duration_ms)}
-              </p>
-            </div>
-          ))}
-        </>
-      )}
+    <div className="relative w-full pb-52">
+      {playlist && <Playlist playlist={playlist} colorData={colorData} />}
     </div>
   );
 };

@@ -3,11 +3,14 @@
 import { useEffect, useState } from "react";
 
 import FeedItem from "./FeedItem";
+import LoadingSpinner from "../LoadingSpinner";
 import { getCookie } from "cookies-next";
 import { spotifyApi } from "@/utils/spotify";
 
 const Feed = () => {
   const token = getCookie("access_token");
+
+  const [loading, setLoading] = useState(true);
 
   const [newRelease, setNewRelease] = useState(null);
   const [featured, setFeatured] = useState(null);
@@ -34,6 +37,18 @@ const Feed = () => {
 
     getData();
   }, []);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [newRelease, featured, topArtists, search]);
+
+  if (loading) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="w-[100vw] overflow-hidden md:w-[40vw]">

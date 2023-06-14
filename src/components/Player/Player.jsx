@@ -10,29 +10,29 @@ import {
 } from "../Icons";
 import React, { useEffect, useRef, useState } from "react";
 
+import Image from "next/image";
 import fetchSong from "@/utils/fetchSong";
 import formatTime from "@/utils/formatTime ";
 import { useDataStore } from "@/zustand/store";
 
 const Player = () => {
-  const { songData, todaysHits, songIndex, songList } = useDataStore(
+  const { songData, todaysHits, songIndex, songList, isPlaying } = useDataStore(
     (state) => state
   );
 
   const audioRef = useRef(null);
   const [duration, setDuration] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [initialized, setInitialized] = useState(false);
 
   const handlePlay = () => {
     audioRef.current.play();
-    setIsPlaying(true);
+    useDataStore.setState({ isPlaying: false });
   };
 
   const handlePause = () => {
     audioRef.current.pause();
-    setIsPlaying(false);
+    useDataStore.setState({ isPlaying: true });
   };
 
   const handleSetTime = (time) => {
@@ -76,7 +76,7 @@ const Player = () => {
       songList[nextSongIndex].artist
     );
 
-    updateDataStore((state) => ({
+    updateDataStore(() => ({
       songData: result,
       songIndex: nextSongIndex,
     }));
@@ -124,7 +124,7 @@ const Player = () => {
   return (
     <>
       {songData.result && (
-        <div className="fixed bottom-14 mx-auto w-[95%] bg-neutral-800 p-1 md:w-[40vw] md:rounded-lg">
+        <div className="fixed bottom-14 mx-auto w-full bg-neutral-800 p-2 md:w-[40vw] md:rounded-lg lg:p-0">
           <audio
             ref={audioRef}
             src={
@@ -136,21 +136,26 @@ const Player = () => {
             className="hidden"
           />
 
-          <div className="flex w-full items-center space-x-2 ">
-            <div className="w-24">
-              <img
+          <div className="flex items-center space-x-2 ">
+            <div className="hidden h-24 lg:block">
+              <Image
+                fill
                 src={songList[songIndex].image}
                 alt={songList[songIndex].name}
-                className="aspect-square w-full md:rounded-lg"
+                className="unset | aspect-square w-full md:rounded-l-lg"
                 loading="lazy"
               />
             </div>
             <div className="flex w-full flex-1 flex-col px-2">
-              <p className="line-clamp-2 text-sm">{songList[songIndex].name}</p>
-              <p className="mb-2 line-clamp-2 text-xs text-gray-500">
-                {songList[songIndex].artist.replace("undefined", "")}
-              </p>
-              <div className="flex w-full justify-between">
+              <div className="hidden items-baseline space-x-3 lg:flex">
+                <p className="line-clamp-2 text-sm">
+                  {songList[songIndex].name}
+                </p>
+                <p className="mb-2 line-clamp-2 text-xs text-gray-500">
+                  {songList[songIndex].artist.replace("undefined", "")}
+                </p>
+              </div>
+              <div className="flex w-full justify-center space-x-4 lg:mb-2">
                 <button
                   onClick={() =>
                     handleSongChange(
@@ -166,7 +171,7 @@ const Player = () => {
                 <button onClick={() => handleSetTime(-15)}>
                   <SkipBackwardIcon />
                 </button>
-                {isPlaying ? (
+                {!isPlaying ? (
                   <button onClick={handlePause}>
                     <PauseIcon />
                   </button>
@@ -191,7 +196,8 @@ const Player = () => {
                   <SkipNextIcon />
                 </button>
               </div>
-              <div className="mt-5 flex flex-col">
+
+              <div className="flex flex-col">
                 <input
                   type="range"
                   min={0}
@@ -199,9 +205,9 @@ const Player = () => {
                   value={currentTime}
                   step={1}
                   onChange={handleSeek}
-                  className="appearance-none rounded-lg bg-white bg-opacity-20 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-black/25 [&::-webkit-slider-thumb]:h-[10px] [&::-webkit-slider-thumb]:w-[10px] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-green-800"
+                  className=""
                 />
-                <div className="mt-1 flex justify-between text-xs">
+                <div className="-mt-1 flex justify-between text-[10px] lg:text-xs">
                   <p>{formatTime(currentTime)}</p>
                   <p>{formatTime(songData.result.duration)}</p>
                 </div>

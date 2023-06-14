@@ -1,6 +1,12 @@
 "use client";
 
-import { ChangeThemeIcon, GenreIcon, HomeIcon, SearchIcon } from "../Icons";
+import {
+  ChangeThemeIcon,
+  GenreIcon,
+  HomeIcon,
+  SearchIcon,
+  UserIcon,
+} from "../Icons";
 
 import Link from "next/link";
 import React from "react";
@@ -10,7 +16,7 @@ const Navbar = () => {
   const { user } = useDataStore((state) => state);
 
   return (
-    <div className="fixed bottom-0 h-14 w-full bg-black md:w-[40vw]">
+    <nav className="fixed bottom-0 h-14 w-full z-50 bg-black md:w-[40vw]">
       <div className="flex justify-around">
         <Link
           href="/login"
@@ -24,17 +30,14 @@ const Navbar = () => {
         >
           <HomeIcon />
         </Link>
-        <div className="rounded-full p-2 hover:cursor-pointer hover:bg-gray-700">
-          {user && (
-            <img
-              src={user?.images[0]?.url}
-              alt={user.display_name}
-              className="aspect-square w-8 rounded-full"
-            />
-          )}
-        </div>
+        <Link
+          href="/me"
+          className="rounded-full p-2 hover:cursor-pointer hover:bg-gray-700"
+        >
+          <UserIcon />
+        </Link>
       </div>
-    </div>
+    </nav>
   );
 };
 

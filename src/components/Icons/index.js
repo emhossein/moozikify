@@ -9,7 +9,9 @@ import {
 import ChangeThemeIcon from "./ChangeThemeIcon";
 import GenreIcon from "./GenreIcon";
 import HomeIcon from "./HomeIcon";
+import MusicBarIcons from "./MusicBarIcons";
 import SearchIcon from "./SearchIcon";
+import UserIcon from "./UserIcon";
 
 export {
   GenreIcon,
@@ -22,4 +24,6 @@ export {
   SkipPreviousIcon,
   SkipForwardIcon,
   SkipBackwardIcon,
+  UserIcon,
+  MusicBarIcons,
 };
