@@ -10,7 +10,7 @@ const FeedItem = ({ items, title, type }) => {
       {items && (
         <>
           <h1 className="my-2 text-lg font-semibold">{title}</h1>
-          <HorizontalScrollView className="no-scrollbar | mb-4 flex w-full space-x-2 overflow-x-scroll">
+          <HorizontalScrollView className="no-scrollbar | mb-4 flex w-full space-x-2 overflow-x-scroll last:mr-4">
             {items?.map((item) => (
               <Link href={`/${type}/${item.id}`} key={item.id}>
                 <div
@@ -21,7 +21,7 @@ const FeedItem = ({ items, title, type }) => {
                   <div className="">
                     <Image
                       fill
-                      src={item.images[0].url}
+                      src={item.images[item.images.length - 1].url}
                       alt={item.name}
                       className="unset | pointer-events-none select-none"
                       loading="lazy"

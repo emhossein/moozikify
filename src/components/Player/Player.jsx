@@ -11,19 +11,18 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
+import PlayerSlider from "./PlayerSlider";
 import fetchSong from "@/utils/fetchSong";
-import formatTime from "@/utils/formatTime ";
 import { useDataStore } from "@/zustand/store";
 
 const Player = () => {
-  const { songData, todaysHits, songIndex, songList, isPlaying } = useDataStore(
+  const { songData, songIndex, songList, isPlaying } = useDataStore(
     (state) => state
   );
 
   const audioRef = useRef(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [initialized, setInitialized] = useState(false);
 
   const handlePlay = () => {
     audioRef.current.play();
@@ -121,6 +120,14 @@ const Player = () => {
     }
   }, [songIndex]);
 
+  useEffect(() => {
+    if (songList) {
+      const history = JSON.parse(localStorage.getItem("history")) || [];
+      history.push(songList[songIndex]);
+      localStorage.setItem("history", JSON.stringify(history));
+    }
+  }, [songData]);
+
   return (
     <>
       {songData.result && (
@@ -152,10 +159,10 @@ const Player = () => {
                   {songList[songIndex].name}
                 </p>
                 <p className="mb-2 line-clamp-2 text-xs text-gray-500">
-                  {songList[songIndex].artist.replace("undefined", "")}
+                  {songList[songIndex].artist}
                 </p>
               </div>
-              <div className="flex w-full justify-center space-x-4 lg:mb-2">
+              <div className="mb-2 flex w-full justify-center space-x-4">
                 <button
                   onClick={() =>
                     handleSongChange(
@@ -197,21 +204,11 @@ const Player = () => {
                 </button>
               </div>
 
-              <div className="flex flex-col">
-                <input
-                  type="range"
-                  min={0}
-                  max={duration}
-                  value={currentTime}
-                  step={1}
-                  onChange={handleSeek}
-                  className=""
-                />
-                <div className="-mt-1 flex justify-between text-[10px] lg:text-xs">
-                  <p>{formatTime(currentTime)}</p>
-                  <p>{formatTime(songData.result.duration)}</p>
-                </div>
-              </div>
+              <PlayerSlider
+                duration={duration}
+                currentTime={currentTime}
+                handleSeek={handleSeek}
+              />
             </div>
           </div>
         </div>

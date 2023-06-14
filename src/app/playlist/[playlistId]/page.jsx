@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-import Playlist from "@/components/Playlist";
+import Playlist from "@/components/Playlist/Playlist";
 import { fetchColorDom } from "@/utils/fetchColorDom";
 import { getCookie } from "cookies-next";
 import { spotifyApi } from "@/utils/spotify";

@@ -1,23 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { MusicBarIcons } from "./Icons";
+import { MusicBarIcons } from "../Icons";
 import React from "react";
 import fetchSong from "@/utils/fetchSong";
 import { formatMs } from "@/utils/formatTime ";
 import { useDataStore } from "@/zustand/store";
 
 const Playlist = ({ playlist, colorData }) => {
-  const { songIndex, isPlaying, songList } = useDataStore((state) => state);
+  const { songIndex,songData, isPlaying, songList } = useDataStore((state) => state);
 
   const handleClickItem = async (name, artist, index, list) => {
     const songList = await list.tracks.items.map((item) => ({
       name: item.track.name,
-      artist:
-        item.track.album.artists[0].name +
-        " " +
-        item.track.album.artists[1]?.name,
+      artist: item.track.album.artists[0].name,
       image: item.track.album.images[0].url,
+      duration: item.track.duration_ms,
+      id: item.id,
     }));
 
     const result = await fetchSong(name, artist);
@@ -39,6 +38,7 @@ const Playlist = ({ playlist, colorData }) => {
             src={playlist.images[0].url}
             alt={playlist.name}
             className="unset | object-cover"
+            placeholder="empty"
           />
         </div>
       </div>
@@ -66,7 +66,10 @@ const Playlist = ({ playlist, colorData }) => {
             <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full ">
               <Image
                 fill
-                src={item.track.album.images[0].url}
+                src={
+                  item.track.album.images[item.track.album.images.length - 1]
+                    .url
+                }
                 alt={item.track.name}
                 className="unset | aspect-square"
               />
@@ -84,7 +87,7 @@ const Playlist = ({ playlist, colorData }) => {
               </div>
             </div>
           </div>
-          {songIndex === index && songList.length ? (
+          {songIndex === index && songList.length && songData.result.title.includes(songList[songIndex].name) ? (
             <MusicBarIcons isPLaying={isPlaying} />
           ) : null}
           <p className="self-center text-sm text-neutral-400">
