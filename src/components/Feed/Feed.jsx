@@ -74,12 +74,12 @@ const Feed = ({ newReleases, featured, topArtists }) => {
     <div className="w-[100vw] overflow-hidden md:w-[40vw]">
       <div className="pl-2">
         <FeedItem
-          items={newAlbums?.albums.items}
+          items={newAlbums?.albums?.items}
           title="New Release"
           type="album"
         />
         <FeedItem
-          items={featuredPlaylist?.playlists.items}
+          items={featuredPlaylist?.playlists?.items}
           title={featuredPlaylist?.message}
           type="playlist"
         />

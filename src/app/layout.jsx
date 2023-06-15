@@ -1,13 +1,13 @@
 import "./globals.css";
 
 import Head from "@/components/Head";
-import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar/Navbar";
 import Player from "@/components/Player/Player";
+import { Poppins } from "next/font/google";
 import User from "@/components/User/User";
 import { cookies } from "next/headers";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
 function RootLayout({ children }) {
   const token = cookies().get("access_token");
@@ -18,7 +18,9 @@ function RootLayout({ children }) {
       className="flex w-screen items-center justify-center overflow-x-hidden"
     >
       <Head />
-      <body className={[inter.className, " relative w-full md:w-[40vw]"]}>
+      <body
+        className={[poppins.className + " ", " relative w-full md:w-[40vw]"]}
+      >
         <header>
           <Navbar />
         </header>
