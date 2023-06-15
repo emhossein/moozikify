@@ -24,7 +24,7 @@ export default async function Home() {
 
   const topArtists = await fetch("https://api.spotify.com/v1/me/top/artists", {
     headers: {
-      Authorization: "Bearer " + token.value,
+      Authorization: "Bearer " + token?.value,
     },
   });
 
