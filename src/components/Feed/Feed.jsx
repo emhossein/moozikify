@@ -10,7 +10,7 @@ import { useDataStore } from "@/zustand/store";
 
 const Feed = ({ newReleases, featured, topArtists }) => {
   const token = getCookie("access_token");
-  const { user, feedData } = useDataStore((state) => state);
+  const { user } = useDataStore((state) => state);
 
   const [newAlbums, setNewAlbums] = useState(null);
   const [featuredPlaylist, setFeaturedPlaylist] = useState(null);
