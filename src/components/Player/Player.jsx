@@ -48,6 +48,7 @@ const Player = () => {
 
   const handleLoadedMetadata = () => {
     setDuration(Math.floor(audioRef.current.duration));
+    audioRef.current.play();
   };
 
   const handleSongChange = async (
@@ -129,21 +130,19 @@ const Player = () => {
   useEffect(() => {
     const id = localStorage.getItem("recentlyPlayedPlaylistId");
     setHistoryId(id);
-
-    console.log(songList);
   }, []);
 
   return (
     <>
       {songData.result && (
-        <div className="fixed bottom-14 mx-auto w-full bg-neutral-800 p-2 md:w-[40vw] md:rounded-lg lg:p-0">
+        <div className="fixed bottom-14 z-50 mx-auto w-full bg-neutral-800 p-2 md:w-[40vw] md:rounded-lg lg:p-0">
           <audio
             ref={audioRef}
             src={
               songData.result?.formats[songData.result?.formats.length - 1].url
             }
+            preload="metadata"
             type="audio/mpeg"
-            autoPlay
             controls
             className="hidden"
           />

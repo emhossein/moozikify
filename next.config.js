@@ -12,6 +12,19 @@ const nextConfig = {
     domains: ["i.scdn.co"],
     unoptimized: true,
   },
+  async headers() {
+    return [
+      {
+        source: "/playlist/:playlistId",
+        headers: [
+          {
+            key: "x-playlist-id",
+            value: ":playlistId",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

@@ -15,7 +15,7 @@ const Login = () => {
   }
 
   function onFailure(error) {
-    console.error(error);
+    console.error("error for login: ", error);
   }
 
   return (

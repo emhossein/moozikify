@@ -12,6 +12,8 @@ const inter = Inter({ subsets: ["latin"] });
 function RootLayout({ children }) {
   const token = cookies().get("access_token");
 
+  console.log(token.value);
+
   return (
     <html
       lang="en"

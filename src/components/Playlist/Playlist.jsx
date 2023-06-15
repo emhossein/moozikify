@@ -1,14 +1,21 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+
 import Image from "next/image";
 import { MusicBarIcons } from "../Icons";
-import React from "react";
+import { fetchColorDom } from "@/utils/fetchColorDom";
 import fetchSong from "@/utils/fetchSong";
 import { formatMs } from "@/utils/formatTime ";
 import { useDataStore } from "@/zustand/store";
 
-const Playlist = ({ playlist, colorData }) => {
-  const { songIndex,songData, isPlaying, songList } = useDataStore((state) => state);
+const Playlist = ({ playlist }) => {
+  const { songIndex, songData, isPlaying, songList } = useDataStore(
+    (state) => state
+  );
+
+  const [colorData, setColorData] = useState(null);
+  const [playlistData, setPlaylistData] = useState(null);
 
   const handleClickItem = async (name, artist, index, list) => {
     const songList = await list.tracks.items.map((item) => ({
@@ -23,6 +30,25 @@ const Playlist = ({ playlist, colorData }) => {
     useDataStore.setState({ songData: result, songIndex: index, songList });
   };
 
+  useEffect(() => {
+    setPlaylistData(JSON.parse(playlist.value));
+  }, []);
+
+  useEffect(() => {
+    const fetchColor = async () => {
+      try {
+        const data = await fetchColorDom(playlistData.images[0].url);
+        setColorData(data);
+      } catch (error) {
+        console.error("Failed to fetch color data:", error);
+      }
+    };
+
+    fetchColor();
+  }, [playlistData]);
+
+  console.log(playlistData);
+
   return (
     <>
       <div
@@ -35,21 +61,21 @@ const Playlist = ({ playlist, colorData }) => {
         <div className="relative -z-10 h-full w-full shrink-0 overflow-hidden">
           <Image
             fill
-            src={playlist.images[0].url}
-            alt={playlist.name}
+            src={playlistData?.images[0].url}
+            alt={playlistData?.name}
             className="unset | object-cover"
             placeholder="empty"
           />
         </div>
       </div>
       <div className="z-20 -mt-10 -translate-y-full text-center">
-        <h1 className="text-lg font-semibold">{playlist.name}</h1>
-        <h3 className="text-sm">{playlist.description}</h3>
+        <h1 className="text-lg font-semibold">{playlistData?.name}</h1>
+        <h3 className="text-sm">{playlistData?.description}</h3>
         <p className="mt-2 text-xs text-gray-400">
-          {playlist.tracks.total} tracks
+          {playlistData?.tracks.total} tracks
         </p>
       </div>
-      {playlist.tracks.items.map((item, index) => (
+      {playlistData?.tracks.items.map((item, index) => (
         <div
           key={item.id}
           className="mx-auto mt-2 flex w-11/12 cursor-pointer justify-between space-x-2 rounded-lg bg-gray-dark  p-2"
@@ -58,7 +84,7 @@ const Playlist = ({ playlist, colorData }) => {
               item.track.name,
               item.track.artists[0].name,
               index,
-              playlist
+              playlistData
             )
           }
         >
@@ -87,7 +113,9 @@ const Playlist = ({ playlist, colorData }) => {
               </div>
             </div>
           </div>
-          {songIndex === index && songList.length && songData.result.title.includes(songList[songIndex].name) ? (
+          {songIndex === index &&
+          songList.length &&
+          songData.result.title.includes(songList[songIndex].name) ? (
             <MusicBarIcons isPLaying={isPlaying} />
           ) : null}
           <p className="self-center text-sm text-neutral-400">

@@ -1,56 +1,22 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-
 import Playlist from "@/components/Playlist/Playlist";
-import { fetchColorDom } from "@/utils/fetchColorDom";
-import { getCookie } from "cookies-next";
-import { spotifyApi } from "@/utils/spotify";
-import { usePathname } from "next/navigation";
+import React from "react";
+import { cookies } from "next/headers";
 
-const Page = () => {
-  const pathname = usePathname();
-  const id = pathname.split("/")[2];
+const Page = async ({ params }) => {
+  const token = cookies().get("access_token");
 
-  const token = getCookie("access_token");
-
-  const [colorData, setColorData] = useState(null);
-  const [data, setData] = useState(null);
-  const [playlist, setPlaylist] = useState(null);
-
-  useEffect(() => {
-    spotifyApi.setAccessToken(token);
-    const getData = async () => {
-      try {
-        const playlistData = await spotifyApi.getPlaylistTracks(id);
-        const playlist = await spotifyApi.getPlaylist(id);
-
-        setData(playlistData);
-        setPlaylist(playlist);
-      } catch (error) {
-        console.log("An error occurred:", error);
-      }
-    };
-
-    getData();
-  }, []);
-
-  useEffect(() => {
-    const fetchColor = async () => {
-      try {
-        const data = await fetchColorDom(playlist.images[0].url);
-        setColorData(data);
-      } catch (error) {
-        console.error("Failed to fetch color data:", error);
-      }
-    };
-
-    fetchColor();
-  }, [playlist]);
+  const playlist = await fetch(
+    `https://api.spotify.com/v1/playlists/${params.playlistId}`,
+    {
+      headers: {
+        Authorization: "Bearer " + token.value,
+      },
+    }
+  );
 
   return (
     <div className="relative w-full pb-52">
-      {playlist && <Playlist playlist={playlist} colorData={colorData} />}
+      {playlist && <Playlist playlist={playlist.json()} />}
     </div>
   );
 };

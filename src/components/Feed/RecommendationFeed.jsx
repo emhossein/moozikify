@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import HorizontalScrollView from "../HorizontalScrollView";
+import { FreeMode } from "swiper";
 import Image from "next/image";
 import fetchSong from "@/utils/fetchSong";
 import { spotifyApi } from "@/utils/spotify";
@@ -37,40 +38,51 @@ const RecommendationFeed = ({ items }) => {
           <h1 className="my-2 text-lg font-semibold">
             Base on your Top choices
           </h1>
-          <HorizontalScrollView className="no-scrollbar | mb-4 flex w-full space-x-2 overflow-x-scroll last:mr-4">
+          <Swiper
+            slidesPerView={8}
+            spaceBetween={8}
+            freeMode={true}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[FreeMode]}
+            className="no-scrollbar | !mb-4 flex !w-full overflow-x-scroll last:mr-4"
+          >
+            {" "}
             {items?.tracks.map((item, index) => (
-              <div
-                key={item.id}
-                onClick={() =>
-                  handleClickItem(
-                    item.name,
-                    item.album.artists[0].name,
-                    index,
-                    items,
-                    item.uri
-                  )
-                }
-                className="hover:cursor-pointer"
-              >
+              <SwiperSlide className="!ml-0 !w-20" key={item.id}>
                 <div
-                  className={`mb-2 aspect-square h-20 overflow-hidden rounded-lg`}
+                  onClick={() =>
+                    handleClickItem(
+                      item.name,
+                      item.album.artists[0].name,
+                      index,
+                      items,
+                      item.uri
+                    )
+                  }
+                  className="hover:cursor-pointer"
                 >
-                  <div className="">
-                    <Image
-                      fill
-                      src={item.album.images[1].url}
-                      alt={item.name}
-                      className="unset | pointer-events-none select-none"
-                      loading="lazy"
-                    />
+                  <div
+                    className={`mb-2 aspect-square h-20 overflow-hidden rounded-lg`}
+                  >
+                    <div className="">
+                      <Image
+                        fill
+                        src={item.album.images[1].url}
+                        alt={item.name}
+                        className="unset | pointer-events-none select-none"
+                        loading="lazy"
+                      />
+                    </div>
                   </div>
+                  <p className={`line-clamp-1 select-none text-xs`}>
+                    {item.name}
+                  </p>
                 </div>
-                <p className={`line-clamp-1 select-none text-xs`}>
-                  {item.name}
-                </p>
-              </div>
+              </SwiperSlide>
             ))}
-          </HorizontalScrollView>
+          </Swiper>
         </>
       )}
     </>

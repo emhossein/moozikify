@@ -28,6 +28,7 @@
     "react-use-gesture": "^9.1.3",
     "react-visibility-sensor": "^5.1.1",
     "spotify-web-api-js": "^1.5.2",
+    "swiper": "^9.4.1",
     "tailwindcss": "3.3.2",
     "use-debounced-search": "^1.0.8",
     "zustand": "^4.3.8"
