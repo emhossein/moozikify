@@ -13,32 +13,53 @@ const Feed = ({ newReleases, featured, topArtists, categories }) => {
   const token = getCookie("access_token");
   const { user, recommendations } = useDataStore((state) => state);
 
-  const [newAlbums, setNewAlbums] = useState(null);
-  const [featuredPlaylist, setFeaturedPlaylist] = useState(null);
-  const [topArtist, setTopArtist] = useState(null);
   const [category, setCategory] = useState(null);
+  const [newAlbums, setNewAlbums] = useState(null);
+  const [topArtist, setTopArtist] = useState(null);
+  const [featuredPlaylist, setFeaturedPlaylist] = useState(null);
 
-  const getData = async () => {
+  const getRecommendations = async () => {
     try {
-      const topArtists = await spotifyApi.getMyTopArtists();
       const topTracks = await spotifyApi.getMyTopTracks();
+      const topArtists = await spotifyApi.getMyTopArtists();
 
       // 5 seeds for recommendations max
       const tracksId = topTracks.items
         .map((item) => item.id)
-        .slice(0, 3)
+        .slice(0, 5)
         .join(",");
       const artistId = topArtists.items
         .map((item) => item.id)
-        .slice(0, 2)
+        .slice(0, 5)
         .join(",");
 
-      const recommendations = await spotifyApi.getRecommendations({
+      const recommendationsArtists = await spotifyApi.getRecommendations({
         seed_artists: artistId,
+        seed_tracks: "",
+        seed_genres: "",
+      });
+
+      const recommendationsTracks = await spotifyApi.getRecommendations({
+        seed_artists: "",
         seed_tracks: tracksId,
         seed_genres: "",
       });
 
+      useDataStore.setState({
+        recommendations: {
+          recommendationsArtists,
+          recommendationsTracks,
+        },
+      });
+
+      localStorage.setItem("recentlyPlayedPlaylistId", recentlyPlayed.id);
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
+  const getData = async () => {
+    try {
       const userPlaylist = await spotifyApi.getUserPlaylists(user.id);
       const userRecentSongs = userPlaylist.items.some(
         (item) => item.name === user.display_name + "'s playlist"
@@ -54,8 +75,6 @@ const Feed = ({ newReleases, featured, topArtists, categories }) => {
         (item) => item.name === user.display_name + "'s playlist"
       );
 
-      useDataStore.setState({ recommendations });
-
       localStorage.setItem("recentlyPlayedPlaylistId", recentlyPlayed.id);
     } catch (error) {
       console.error("An error occurred:", error);
@@ -66,13 +85,17 @@ const Feed = ({ newReleases, featured, topArtists, categories }) => {
     spotifyApi.setAccessToken(token);
     setNewAlbums(JSON.parse(newReleases?.value));
     setFeaturedPlaylist(JSON.parse(featured?.value));
-    setTopArtist(JSON.parse(topArtists?.value));
     setCategory(JSON.parse(categories?.value));
+    setTopArtist(JSON.parse(topArtists?.value));
 
-    if (!recommendations) {
-      getData();
-    }
+    getData();
   }, []);
+
+  useEffect(() => {
+    if (recommendations?.recommendationsTracks === null) {
+      getRecommendations();
+    }
+  }, [getData]);
 
   return (
     <div className="w-full overflow-hidden">
@@ -82,17 +105,25 @@ const Feed = ({ newReleases, featured, topArtists, categories }) => {
           title={featuredPlaylist?.message}
           type="playlist"
         />
+        <RecommendationFeed
+          items={recommendations?.recommendationsArtists}
+          title="You might Also like these songs"
+        />
         <FeedItem
           items={newAlbums?.albums?.items}
           title="New Release"
           type="album"
         />
-        <RecommendationFeed items={recommendations} />
         <FeedItem
           items={topArtist?.items}
           title="Your Top Artists"
           type="artist"
         />
+        <RecommendationFeed
+          items={recommendations?.recommendationsTracks}
+          title="You might Also like these songs"
+        />
+
         <CategoriesItem items={category?.categories.items} />
       </div>
     </div>

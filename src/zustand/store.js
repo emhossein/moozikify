@@ -9,5 +9,8 @@ export const useDataStore = create(() => ({
   token: "",
   user: null,
   isPlaying: false,
-  recommendations: null,
+  recommendations: {
+    recommendationsArtists: null,
+    recommendationsTracks: null,
+  },
 }));

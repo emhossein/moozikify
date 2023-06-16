@@ -11,7 +11,7 @@ export default async function Home() {
         Authorization: "Bearer " + token?.value,
       },
     }
-  ).catch((err) => console.log(err));
+  ).catch((err) => console.log("newReleases ", err));
 
   const featured = await fetch(
     "https://api.spotify.com/v1/browse/featured-playlists?country=US",
@@ -20,13 +20,13 @@ export default async function Home() {
         Authorization: "Bearer " + token?.value,
       },
     }
-  ).catch((err) => console.log(err));
+  ).catch((err) => console.log("featured ", err));
 
   const topArtists = await fetch("https://api.spotify.com/v1/me/top/artists", {
     headers: {
       Authorization: "Bearer " + token?.value,
     },
-  }).catch((err) => console.log(err));
+  }).catch((err) => console.log("top artists ", err));
 
   const categories = await fetch(
     "https://api.spotify.com/v1/browse/categories?country=US&limit=12",
@@ -35,7 +35,7 @@ export default async function Home() {
         Authorization: "Bearer " + token?.value,
       },
     }
-  ).catch((err) => console.log(err));
+  ).catch((err) => console.log("categories ", err));
 
   return (
     <main className="6 min-h-screen bg-gradient-to-b from-[#1db95480] from-10% to-black to-30% pb-52">

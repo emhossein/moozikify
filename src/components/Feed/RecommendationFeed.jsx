@@ -10,7 +10,7 @@ import fetchSong from "@/utils/fetchSong";
 import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
 
-const RecommendationFeed = ({ items }) => {
+const RecommendationFeed = ({ items, title }) => {
   const [historyId, setHistoryId] = useState("");
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const RecommendationFeed = ({ items }) => {
 
   return (
     <>
-      <h1 className="my-2 text-lg font-semibold">Base on your Top choices</h1>
+      <h1 className="my-2 text-lg font-semibold">{title}</h1>
       <HorizontalScrollView className="no-scrollbar | mb-4 flex h-28 w-full space-x-2 overflow-x-scroll pr-4">
         {items?.tracks.map((item, index) => (
           <div
