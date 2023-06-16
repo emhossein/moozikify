@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 import { MusicBarIcons } from "../Icons";
+import blurhash from "@/utils/blurhash";
 import fetchSong from "@/utils/fetchSong";
 import { formatMs } from "@/utils/formatTime ";
 import { spotifyApi } from "@/utils/spotify";
@@ -68,6 +69,8 @@ const Me = ({ user, colorData }) => {
               src={user?.images[0].url}
               alt={user?.display_name}
               className="unset rounded-full"
+              placeholder="blur"
+              blurDataURL={blurhash}
             />
           </div>
           <h1>@{user.display_name}</h1>
@@ -95,6 +98,8 @@ const Me = ({ user, colorData }) => {
                         fill
                         src={item?.track.album.images[0].url}
                         alt={item?.track.name}
+                        placeholder="blur"
+                        blurDataURL={blurhash}
                         className="unset | aspect-square"
                       />
                     </div>

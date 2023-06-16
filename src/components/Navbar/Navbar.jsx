@@ -16,7 +16,7 @@ const Navbar = () => {
   const { user } = useDataStore((state) => state);
 
   return (
-    <nav className="fixed bottom-0 h-14 w-full z-50 bg-black md:w-[40vw]">
+    <nav className="fixed bottom-0 z-50 h-14 w-full bg-black md:w-[60vw]">
       <div className="flex justify-around">
         <Link
           href="/login"

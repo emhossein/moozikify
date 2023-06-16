@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./node_modules/flowbite-react/**/*.js",
+  content: [
+    "./node_modules/flowbite-react/**/*.js",
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -15,10 +16,13 @@ module.exports = {
       colors: {
         "gray-dark": "#2c2c2ca9",
         brand: "#1DB954",
+        black: "#0F0F0F",
+        white: "#F1F1F1",
+        "gray-350": "#303030",
+        "gray-hover": "#3D3D3D",
+        "gray-light": "#AAAAAA",
       },
     },
   },
-  plugins: [
-    require("flowbite/plugin")
-  ],
+  plugins: [require("flowbite/plugin")],
 };

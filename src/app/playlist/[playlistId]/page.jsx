@@ -16,7 +16,7 @@ const Page = async ({ params }) => {
 
   return (
     <div className="relative w-full pb-52">
-      {playlist && <Playlist playlist={playlist.json()} />}
+      <Playlist playlist={playlist.json()} />
     </div>
   );
 };

@@ -2,7 +2,6 @@
 "use client";
 
 import React from "react";
-import SongNotification from "./SongNotification";
 import { useDataStore } from "@/zustand/store";
 
 const Head = () => {

@@ -30,6 +30,13 @@ function HorizontalScrollView(props) {
           return [-ref.current.scrollLeft, 0];
         },
       },
+      options: {
+        domTarget: true,
+        eventOptions: {
+          passive: false,
+        },
+        filterTaps: true,
+      },
     }
   );
 

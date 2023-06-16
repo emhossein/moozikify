@@ -2,20 +2,21 @@
 
 import { useEffect, useState } from "react";
 
+import CategoriesItem from "./CategoriesItem";
 import FeedItem from "./FeedItem";
 import RecommendationFeed from "./RecommendationFeed";
 import { getCookie } from "cookies-next";
 import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
 
-const Feed = ({ newReleases, featured, topArtists }) => {
+const Feed = ({ newReleases, featured, topArtists, categories }) => {
   const token = getCookie("access_token");
-  const { user } = useDataStore((state) => state);
+  const { user, recommendations } = useDataStore((state) => state);
 
   const [newAlbums, setNewAlbums] = useState(null);
   const [featuredPlaylist, setFeaturedPlaylist] = useState(null);
   const [topArtist, setTopArtist] = useState(null);
-  const [recommendations, setRecommendations] = useState(null);
+  const [category, setCategory] = useState(null);
 
   const getData = async () => {
     try {
@@ -53,7 +54,7 @@ const Feed = ({ newReleases, featured, topArtists }) => {
         (item) => item.name === user.display_name + "'s playlist"
       );
 
-      setRecommendations(recommendations);
+      useDataStore.setState({ recommendations });
 
       localStorage.setItem("recentlyPlayedPlaylistId", recentlyPlayed.id);
     } catch (error) {
@@ -63,32 +64,36 @@ const Feed = ({ newReleases, featured, topArtists }) => {
 
   useEffect(() => {
     spotifyApi.setAccessToken(token);
-    setNewAlbums(JSON.parse(newReleases.value));
-    setFeaturedPlaylist(JSON.parse(featured.value));
-    setTopArtist(JSON.parse(topArtists.value));
+    setNewAlbums(JSON.parse(newReleases?.value));
+    setFeaturedPlaylist(JSON.parse(featured?.value));
+    setTopArtist(JSON.parse(topArtists?.value));
+    setCategory(JSON.parse(categories?.value));
 
-    getData();
+    if (!recommendations) {
+      getData();
+    }
   }, []);
 
   return (
-    <div className="w-[100vw] overflow-hidden md:w-[40vw]">
+    <div className="w-full overflow-hidden">
       <div className="pl-2">
-        <FeedItem
-          items={newAlbums?.albums?.items}
-          title="New Release"
-          type="album"
-        />
         <FeedItem
           items={featuredPlaylist?.playlists?.items}
           title={featuredPlaylist?.message}
           type="playlist"
         />
         <FeedItem
+          items={newAlbums?.albums?.items}
+          title="New Release"
+          type="album"
+        />
+        <RecommendationFeed items={recommendations} />
+        <FeedItem
           items={topArtist?.items}
           title="Your Top Artists"
           type="artist"
         />
-        <RecommendationFeed items={recommendations} />
+        <CategoriesItem items={category?.categories.items} />
       </div>
     </div>
   );

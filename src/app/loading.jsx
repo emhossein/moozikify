@@ -1,4 +1,4 @@
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/Loading/LoadingSpinner";
 import React from "react";
 
 const loading = () => {

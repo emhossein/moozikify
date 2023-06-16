@@ -1,21 +1,30 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
 
-import { FreeMode } from "swiper";
+import HorizontalScrollView from "../HorizontalScrollView";
 import Image from "next/image";
+import ItemsLoading from "../Loading/ItemsLoading";
+import { PlayIcon } from "../Icons";
+import blurhash from "@/utils/blurhash";
 import fetchSong from "@/utils/fetchSong";
 import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
 
 const RecommendationFeed = ({ items }) => {
+  const { recommendations } = useDataStore((state) => state);
+
   const [historyId, setHistoryId] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const id = localStorage.getItem("recentlyPlayedPlaylistId");
     setHistoryId(id);
   }, []);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [recommendations]);
 
   const handleClickItem = async (name, artist, index, list, uri) => {
     const songList = await list.tracks.map((item) => ({
@@ -33,58 +42,48 @@ const RecommendationFeed = ({ items }) => {
 
   return (
     <>
-      {items && (
-        <>
-          <h1 className="my-2 text-lg font-semibold">
-            Base on your Top choices
-          </h1>
-          <Swiper
-            slidesPerView={8}
-            spaceBetween={8}
-            freeMode={true}
-            pagination={{
-              clickable: true,
-            }}
-            modules={[FreeMode]}
-            className="no-scrollbar | !mb-4 flex !w-full overflow-x-scroll last:mr-4"
-          >
-            {" "}
-            {items?.tracks.map((item, index) => (
-              <SwiperSlide className="!ml-0 !w-20" key={item.id}>
-                <div
-                  onClick={() =>
-                    handleClickItem(
-                      item.name,
-                      item.album.artists[0].name,
-                      index,
-                      items,
-                      item.uri
-                    )
-                  }
-                  className="hover:cursor-pointer"
-                >
-                  <div
-                    className={`mb-2 aspect-square h-20 overflow-hidden rounded-lg`}
-                  >
-                    <div className="">
-                      <Image
-                        fill
-                        src={item.album.images[1].url}
-                        alt={item.name}
-                        className="unset | pointer-events-none select-none"
-                        loading="lazy"
-                      />
-                    </div>
+      <h1 className="my-2 text-lg font-semibold">Base on your Top choices</h1>
+      <HorizontalScrollView className="no-scrollbar | mb-4 flex h-28 w-full space-x-2 overflow-x-scroll pr-4">
+        {items?.tracks.map((item, index) =>
+          !loading ? (
+            <div
+              title={item.name}
+              key={item.id}
+              onClick={() =>
+                handleClickItem(
+                  item.name,
+                  item.album.artists[0].name,
+                  index,
+                  items,
+                  item.uri
+                )
+              }
+              className="w-20 hover:cursor-pointer"
+            >
+              <div className="mb-2">
+                <div className="relative aspect-square h-20">
+                  <Image
+                    fill
+                    src={item.album.images[1].url}
+                    alt={item.name}
+                    className="unset | pointer-events-none select-none rounded-lg"
+                    placeholder="blur"
+                    blurDataURL={blurhash}
+                    
+                  />
+                  <div className="absolute -bottom-2 right-1 z-10 rounded-full">
+                    <PlayIcon fill="#1DB954" />
                   </div>
-                  <p className={`line-clamp-1 select-none text-xs`}>
-                    {item.name}
-                  </p>
+                  <span className="absolute -bottom-1.5 right-2 h-4 w-4 rounded-full bg-white" />
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </>
-      )}
+              </div>
+              <p className={`line-clamp-1 select-none text-xs`}>{item.name}</p>
+            </div>
+          ) : (
+            <ItemsLoading key={index} />
+          )
+        )}
+      </HorizontalScrollView>
     </>
   );
 };

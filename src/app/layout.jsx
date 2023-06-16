@@ -19,7 +19,7 @@ function RootLayout({ children }) {
     >
       <Head />
       <body
-        className={[poppins.className + " ", " relative w-full md:w-[40vw]"]}
+        className={[poppins.className + " ", " relative w-full md:w-[60vw]"]}
       >
         <header>
           <Navbar />
@@ -31,5 +31,11 @@ function RootLayout({ children }) {
     </html>
   );
 }
+
+export const metadata = {
+  icons: {
+    icon: "/public/favicon.ico",
+  },
+};
 
 export default RootLayout;

@@ -17,7 +17,6 @@ const User = ({ token }) => {
         useDataStore.setState({ user, token });
       } catch (error) {
         console.log("An error occurred:", error);
-        router.push("/login");
       }
     };
 

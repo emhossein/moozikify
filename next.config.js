@@ -12,16 +12,20 @@ const nextConfig = {
     domains: ["i.scdn.co"],
     unoptimized: true,
   },
-  async headers() {
+  async redirects() {
     return [
+      // if the cookie `access_token` is present,
+      // this redirect will NOT be applied
       {
-        source: "/playlist/:playlistId",
-        headers: [
+        source: "/",
+        missing: [
           {
-            key: "x-playlist-id",
-            value: ":playlistId",
+            type: "cookie",
+            key: "access_token",
           },
         ],
+        permanent: false,
+        destination: "/login",
       },
     ];
   },

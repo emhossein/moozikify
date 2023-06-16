@@ -12,6 +12,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import PlayerSlider from "./PlayerSlider";
+import blurhash from "@/utils/blurhash";
 import fetchSong from "@/utils/fetchSong";
 import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
@@ -155,7 +156,8 @@ const Player = () => {
                 alt={songList[songIndex].name}
                 className="unset | aspect-square w-full md:rounded-l-lg"
                 loading="lazy"
-                placeholder="empty"
+                placeholder="blur"
+                blurDataURL={blurhash}
               />
             </div>
             <div className="flex w-full flex-1 flex-col px-2">
