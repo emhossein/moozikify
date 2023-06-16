@@ -23,7 +23,6 @@ const Player = () => {
   );
 
   const audioRef = useRef(null);
-  const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [historyId, setHistoryId] = useState("");
 
@@ -48,7 +47,7 @@ const Player = () => {
   };
 
   const handleLoadedMetadata = () => {
-    setDuration(Math.floor(audioRef.current.duration));
+    useDataStore.setState({ isPlaying: audioRef?.current.paused });
     audioRef.current.play();
   };
 
@@ -136,7 +135,7 @@ const Player = () => {
   return (
     <>
       {songData.result && (
-        <div className="fixed bottom-14 z-50 mx-auto w-full bg-neutral-800 p-2 md:w-[40vw] md:rounded-lg lg:p-0">
+        <div className="fixed bottom-14 z-50 mx-auto w-full bg-neutral-800 md:w-[60vw] md:rounded-lg">
           <audio
             ref={audioRef}
             src={
@@ -149,7 +148,7 @@ const Player = () => {
           />
 
           <div className="flex items-center space-x-2 ">
-            <div className="h-16 lg:h-24">
+            <div className="h-[87px] lg:h-[115px]">
               <Image
                 fill
                 src={songList[songIndex].image}
@@ -160,7 +159,7 @@ const Player = () => {
                 blurDataURL={blurhash}
               />
             </div>
-            <div className="flex w-full flex-1 flex-col px-2">
+            <div className="flex w-full flex-1 flex-col p-2">
               <div className="hidden items-baseline space-x-3 lg:flex">
                 <p className="line-clamp-2 text-sm">
                   {songList[songIndex].name}
@@ -185,13 +184,13 @@ const Player = () => {
                 <button onClick={() => handleSetTime(-15)}>
                   <SkipBackwardIcon />
                 </button>
-                {!isPlaying ? (
-                  <button onClick={handlePause}>
-                    <PauseIcon />
-                  </button>
-                ) : (
+                {isPlaying ? (
                   <button onClick={handlePlay}>
                     <PlayIcon />
+                  </button>
+                ) : (
+                  <button onClick={handlePause}>
+                    <PauseIcon />
                   </button>
                 )}
                 <button onClick={() => handleSetTime(15)}>
@@ -211,11 +210,7 @@ const Player = () => {
                 </button>
               </div>
 
-              <PlayerSlider
-                duration={duration}
-                currentTime={currentTime}
-                handleSeek={handleSeek}
-              />
+              <PlayerSlider currentTime={currentTime} handleSeek={handleSeek} />
             </div>
           </div>
         </div>

@@ -13,4 +13,6 @@ export const useDataStore = create(() => ({
     recommendationsArtists: null,
     recommendationsTracks: null,
   },
+  searchTerm:'',
+  searchResult: null,
 }));

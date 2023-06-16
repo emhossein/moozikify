@@ -62,7 +62,7 @@ const Playlist = ({ playlist }) => {
         <div
           className="absolute top-0 -z-10 h-screen w-full"
           style={{
-            background: `linear-gradient(180deg, ${colorData?.vibrant}, rgba(0,0,0,1))`,
+            background: `linear-gradient(180deg, ${colorData?.vibrant}, #0F0F0F)`,
           }}
         />
         <div className="flex h-64 w-full space-x-2 overflow-hidden bg-gradient-to-b from-transparent to-black">

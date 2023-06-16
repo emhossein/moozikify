@@ -107,7 +107,7 @@ const Feed = ({ newReleases, featured, topArtists, categories }) => {
         />
         <RecommendationFeed
           items={recommendations?.recommendationsArtists}
-          title="You might Also like these songs"
+          title="Base on your top artists"
         />
         <FeedItem
           items={newAlbums?.albums?.items}
@@ -121,10 +121,10 @@ const Feed = ({ newReleases, featured, topArtists, categories }) => {
         />
         <RecommendationFeed
           items={recommendations?.recommendationsTracks}
-          title="You might Also like these songs"
+          title="You might also like these songs"
         />
 
-        <CategoriesItem items={category?.categories.items} />
+        <CategoriesItem items={category?.categories?.items} />
       </div>
     </div>
   );

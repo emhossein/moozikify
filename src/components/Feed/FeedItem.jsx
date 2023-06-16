@@ -2,6 +2,7 @@
 
 import HorizontalScrollView from "../HorizontalScrollView";
 import Image from "next/image";
+import { UserIcon } from "../Icons";
 import blurhash from "@/utils/blurhash";
 import { useRouter } from "next/navigation";
 
@@ -30,15 +31,21 @@ const FeedItem = ({ items, title, type }) => {
                     type === "artist" ? "rounded-full" : "rounded-lg"
                   }`}
                 >
-                  <div className="">
-                    <Image
-                      fill
-                      src={item.images[item.images.length - 1].url}
-                      alt={item.name}
-                      className="unset | pointer-events-none select-none"
-                      placeholder="blur"
-                      blurDataURL={blurhash}
-                    />
+                  <div className="h-full">
+                    {item.images.length ? (
+                      <Image
+                        fill
+                        src={item?.images?.[item?.images.length - 1].url}
+                        alt={item.name}
+                        className="unset | pointer-events-none select-none"
+                        placeholder="blur"
+                        blurDataURL={blurhash}
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center bg-gray-dark">
+                        <UserIcon size={60} />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <p

@@ -2,7 +2,7 @@ import React from "react";
 import formatTime from "@/utils/formatTime ";
 import { useDataStore } from "@/zustand/store";
 
-const PlayerSlider = ({ duration, currentTime, handleSeek }) => {
+const PlayerSlider = ({ currentTime, handleSeek }) => {
   const { songData } = useDataStore((state) => state);
 
   return (
@@ -10,7 +10,7 @@ const PlayerSlider = ({ duration, currentTime, handleSeek }) => {
       <input
         type="range"
         min={0}
-        max={duration}
+        max={Math.floor(songData.result.duration)}
         value={currentTime}
         step={1}
         onChange={handleSeek}
