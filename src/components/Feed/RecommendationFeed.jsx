@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 
 import HorizontalScrollView from "../HorizontalScrollView";
 import Image from "next/image";
-import ItemsLoading from "../Loading/ItemsLoading";
 import { PlayIcon } from "../Icons";
 import blurhash from "@/utils/blurhash";
 import fetchSong from "@/utils/fetchSong";
@@ -15,7 +14,6 @@ const RecommendationFeed = ({ items }) => {
   const { recommendations } = useDataStore((state) => state);
 
   const [historyId, setHistoryId] = useState("");
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const id = localStorage.getItem("recentlyPlayedPlaylistId");
@@ -44,45 +42,40 @@ const RecommendationFeed = ({ items }) => {
     <>
       <h1 className="my-2 text-lg font-semibold">Base on your Top choices</h1>
       <HorizontalScrollView className="no-scrollbar | mb-4 flex h-28 w-full space-x-2 overflow-x-scroll pr-4">
-        {items?.tracks.map((item, index) =>
-          !loading ? (
-            <div
-              title={item.name}
-              key={item.id}
-              onClick={() =>
-                handleClickItem(
-                  item.name,
-                  item.album.artists[0].name,
-                  index,
-                  items,
-                  item.uri
-                )
-              }
-              className="w-20 hover:cursor-pointer"
-            >
-              <div className="mb-2">
-                <div className="relative aspect-square h-20">
-                  <Image
-                    fill
-                    src={item.album.images[1].url}
-                    alt={item.name}
-                    className="unset | pointer-events-none select-none rounded-lg"
-                    placeholder="blur"
-                    blurDataURL={blurhash}
-                    
-                  />
-                  <div className="absolute -bottom-2 right-1 z-10 rounded-full">
-                    <PlayIcon fill="#1DB954" />
-                  </div>
-                  <span className="absolute -bottom-1.5 right-2 h-4 w-4 rounded-full bg-white" />
+        {items?.tracks.map((item, index) => (
+          <div
+            title={item.name}
+            key={item.id}
+            onClick={() =>
+              handleClickItem(
+                item.name,
+                item.album.artists[0].name,
+                index,
+                items,
+                item.uri
+              )
+            }
+            className="w-20 hover:cursor-pointer"
+          >
+            <div className="mb-2">
+              <div className="relative aspect-square h-20">
+                <Image
+                  fill
+                  src={item.album.images[1].url}
+                  alt={item.name}
+                  className="unset | pointer-events-none select-none rounded-lg"
+                  placeholder="blur"
+                  blurDataURL={blurhash}
+                />
+                <div className="absolute -bottom-2 right-1 z-10 rounded-full">
+                  <PlayIcon fill="#1DB954" />
                 </div>
+                <span className="absolute -bottom-1.5 right-2 h-4 w-4 rounded-full bg-white" />
               </div>
-              <p className={`line-clamp-1 select-none text-xs`}>{item.name}</p>
             </div>
-          ) : (
-            <ItemsLoading key={index} />
-          )
-        )}
+            <p className={`line-clamp-1 select-none text-xs`}>{item.name}</p>
+          </div>
+        ))}
       </HorizontalScrollView>
     </>
   );
