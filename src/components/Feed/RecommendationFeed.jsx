@@ -11,18 +11,12 @@ import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
 
 const RecommendationFeed = ({ items }) => {
-  const { recommendations } = useDataStore((state) => state);
-
   const [historyId, setHistoryId] = useState("");
 
   useEffect(() => {
     const id = localStorage.getItem("recentlyPlayedPlaylistId");
     setHistoryId(id);
   }, []);
-
-  useEffect(() => {
-    setLoading(false);
-  }, [recommendations]);
 
   const handleClickItem = async (name, artist, index, list, uri) => {
     const songList = await list.tracks.map((item) => ({
