@@ -1,16 +1,20 @@
 "use client";
 
+import { PauseIcon, PlayIcon } from "../Icons";
 import React, { useEffect, useState } from "react";
 
 import HorizontalScrollView from "../HorizontalScrollView";
 import Image from "next/image";
-import { PlayIcon } from "../Icons";
 import blurhash from "@/utils/blurhash";
 import fetchSong from "@/utils/fetchSong";
 import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
 
 const RecommendationFeed = ({ items, title }) => {
+  const { songIndex, isPlaying, songList, songData } = useDataStore(
+    (state) => state
+  );
+
   const [historyId, setHistoryId] = useState("");
 
   useEffect(() => {
@@ -62,7 +66,11 @@ const RecommendationFeed = ({ items, title }) => {
                   blurDataURL={blurhash}
                 />
                 <div className="absolute -bottom-2 right-1 z-10 rounded-full">
-                  <PlayIcon fill="#1DB954" />
+                  {songList[songIndex].name === item.name ? (
+                    <PauseIcon fill="#1DB954" />
+                  ) : (
+                    <PlayIcon fill="#1DB954" />
+                  )}
                 </div>
                 <span className="absolute -bottom-1.5 right-2 h-4 w-4 rounded-full bg-white" />
               </div>

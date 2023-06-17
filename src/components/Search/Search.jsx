@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { SearchIcon } from "../Icons";
 import SearchResults from "./SearchResults";
@@ -11,6 +11,7 @@ import useDebouncedSearch from "use-debounced-search";
 
 const Search = () => {
   const token = getCookie("access_token");
+  const token2 = getCookie("access_token");
 
   // const [searchResult, setSearchResult] = useState(null);
   const { searchResult, searchTerm } = useDataStore((state) => state);
@@ -28,7 +29,7 @@ const Search = () => {
   };
 
   useEffect(() => {
-    spotifyApi.setAccessToken(token);
+    spotifyApi.setAccessToken(token2);
   }, []);
 
   useEffect(() => {
