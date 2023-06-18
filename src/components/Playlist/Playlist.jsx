@@ -79,7 +79,10 @@ const Playlist = ({ playlist }) => {
         </div>
         <div className="z-20 -mt-10 -translate-y-full px-4">
           <h1 className="text-xl font-bold">{playlistData?.name}</h1>
-          <h3 className="text-sm">{playlistData?.description}</h3>
+          <h3
+            className="text-sm"
+            dangerouslySetInnerHTML={{ __html: playlistData?.description }}
+          ></h3>
           <p className="mt-2 text-xs text-gray-400">
             {playlistData?.tracks.total} tracks
           </p>

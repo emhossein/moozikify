@@ -11,9 +11,7 @@ import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
 
 const RecommendationFeed = ({ items, title }) => {
-  const { songIndex, isPlaying, songList, songData } = useDataStore(
-    (state) => state
-  );
+  const { songIndex, songList } = useDataStore((state) => state);
 
   const [historyId, setHistoryId] = useState("");
 
