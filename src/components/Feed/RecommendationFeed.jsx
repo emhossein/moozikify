@@ -66,7 +66,8 @@ const RecommendationFeed = ({ items, title }) => {
                   blurDataURL={blurhash}
                 />
                 <div className="absolute -bottom-2 right-1 z-10 rounded-full">
-                  {songList[songIndex].name === item.name ? (
+                  {songList.length &&
+                  songList?.[songIndex]?.name === item.name ? (
                     <PauseIcon fill="#1DB954" />
                   ) : (
                     <PlayIcon fill="#1DB954" />
