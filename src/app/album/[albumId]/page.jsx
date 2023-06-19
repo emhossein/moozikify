@@ -1,15 +1,12 @@
-"use client";
-
+import Album from "@/components/Album/Album";
 import React from "react";
-import { usePathname } from "next/navigation";
 
-const Page = () => {
-  const pathname = usePathname();
-  const id = pathname.split("/")[2];
-
-  console.log(id);
-
-  return <div>Page</div>;
+const Page = ({ params }) => {
+  return (
+    <div>
+      <Album id={params.albumId} />
+    </div>
+  );
 };
 
 export default Page;

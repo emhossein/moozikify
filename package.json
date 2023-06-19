@@ -12,6 +12,7 @@
     "@react-hooks-library/core": "^0.5.1",
     "@react-spring/web": "^9.7.2",
     "@use-gesture/react": "^10.2.27",
+    "@vercel/analytics": "^1.0.1",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "cookies-next": "^2.1.2",

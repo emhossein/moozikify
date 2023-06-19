@@ -11,7 +11,6 @@ import useDebouncedSearch from "use-debounced-search";
 
 const Search = () => {
   const token = getCookie("access_token");
-  const token2 = getCookie("access_token");
 
   // const [searchResult, setSearchResult] = useState(null);
   const { searchResult, searchTerm } = useDataStore((state) => state);
@@ -29,7 +28,7 @@ const Search = () => {
   };
 
   useEffect(() => {
-    spotifyApi.setAccessToken(token2);
+    spotifyApi.setAccessToken(token);
   }, []);
 
   useEffect(() => {
@@ -57,13 +56,6 @@ const Search = () => {
             onChange={handleChange}
           />
         </div>
-        <button
-          type="submit"
-          class="ml-2 rounded-lg border border-brand bg-brand p-2 text-sm font-medium text-white hover:bg-brand focus:outline-none focus:ring-0"
-        >
-          <SearchIcon />
-          <span class="sr-only">Search</span>
-        </button>
       </form>
       <SearchResults results={searchResult} searched={searchTerm} />
     </div>

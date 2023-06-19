@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { Analytics } from '@vercel/analytics/react';
 import Head from "@/components/Head";
 import Navbar from "@/components/Navbar/Navbar";
 import Player from "@/components/Player/Player";
@@ -27,6 +28,7 @@ function RootLayout({ children }) {
         {children}
         <Player />
         <User token={token?.value} />
+        <Analytics />
       </body>
     </html>
   );
