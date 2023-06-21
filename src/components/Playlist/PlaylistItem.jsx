@@ -26,11 +26,13 @@ const PlaylistItem = ({ items }) => {
     useDataStore.setState({ songData: result, songIndex: index, songList });
   };
 
+
   return (
     <>
       {items?.map((item, index) => {
         return (
-          <div
+          <>
+          {item.track && <div
             key={item.track.id}
             className="mx-auto mt-2 flex w-11/12 cursor-pointer justify-between space-x-2 rounded-lg bg-gray-dark  p-2"
             onClick={() =>
@@ -79,7 +81,8 @@ const PlaylistItem = ({ items }) => {
             <p className="self-center text-sm text-neutral-400">
               {formatMs(item.track.duration_ms)}
             </p>
-          </div>
+          </div>}
+          </>
         );
       })}
     </>

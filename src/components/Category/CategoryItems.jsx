@@ -1,6 +1,5 @@
 "use client";
 
-import HorizontalScrollView from "../HorizontalScrollView";
 import Image from "next/image";
 import { UserIcon } from "../Icons";
 import blurhash from "@/utils/blurhash";
