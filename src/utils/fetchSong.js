@@ -1,27 +1,36 @@
-const SEARCHED_SONG_INDEX = 0;
+import randomApiKey from "./randomApiKey";
 
 const fetchSong = async (name, artist) => {
   try {
     const soundcloudUrlResponse = await fetch(
-      `https://soundcloud-downloader4.p.rapidapi.com/soundcloud/search?query=${
-        artist + " - " + name
-      }`,
+      `https://musicapi13.p.rapidapi.com/public/search`,
       {
+        method: "POST",
         headers: {
-          "X-RapidAPI-Host": "soundcloud-downloader4.p.rapidapi.com",
-          "X-RapidAPI-Key": process.env.RAPID_KEY,
+          "content-type": "application/json",
+          "X-RapidAPI-Host": "musicapi13.p.rapidapi.com",
+          "X-RapidAPI-Key": randomApiKey(),
         },
+        body: JSON.stringify({
+          track: name,
+          artist: artist,
+          type: "track",
+          sources: ["soundcloud"],
+        }),
       }
     );
 
+    console.log(randomApiKey()); 
+    
     if (!soundcloudUrlResponse.ok) {
       throw new Error("Failed to retrieve SoundCloud URL");
     }
-
+    
     const soundcloudUrl = await soundcloudUrlResponse.json();
-
+    
+    
     const downloadSong = await fetch(
-      `https://one-api.ir/soundcloud/?token=${process.env.API_KEY}&action=download&link=${soundcloudUrl.result[SEARCHED_SONG_INDEX].url}`
+      `https://one-api.ir/soundcloud/?token=${process.env.API_KEY}&action=download&link=${soundcloudUrl.tracks[0].data.url}`
     );
 
     if (!downloadSong.ok) {
@@ -30,9 +39,9 @@ const fetchSong = async (name, artist) => {
 
     return await downloadSong.json();
   } catch (error) {
-    // Handle the error appropriately (e.g., logging, displaying an error message)
-    console.error("An error occurred during the fetchSong operation:", error);
-    throw error; // Rethrow the error to propagate it to the caller
+   
+    console.log("An error occurred during the fetchSong operation:", error);
+    throw error;
   }
 };
 
