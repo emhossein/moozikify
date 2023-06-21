@@ -94,6 +94,13 @@ const Player = () => {
     setCurrentTime(time);
   };
 
+  const handleAudioReady = () => {
+    audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
+  };
+
+ 
+
+
   useEffect(() => {
     const audioElement = audioRef.current;
 
@@ -112,6 +119,8 @@ const Player = () => {
       audioElement.addEventListener("timeupdate", handleTimeUpdate);
       audioElement.addEventListener("loadedmetadata", handleLoadedMetadata);
       audioElement.addEventListener("error", handleError);
+      audioRef.current.addEventListener("canplaythrough", handleAudioReady);
+   
 
       return () => {
         audioElement.removeEventListener("ended", handleEnded);
@@ -123,6 +132,8 @@ const Player = () => {
           handleLoadedMetadata
         );
         audioElement.removeEventListener("error", handleError);
+        audioRef.current.removeEventListener("canplaythrough", handleAudioReady);
+        
       };
     }
   }, [songIndex]);

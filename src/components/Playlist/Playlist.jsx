@@ -8,16 +8,19 @@ import axios from "axios";
 import blurhash from "@/utils/blurhash";
 import { fetchColorDom } from "@/utils/fetchColorDom";
 import { getCookie } from "cookies-next";
+import { spotifyApi } from "@/utils/spotify";
 import { useBottomReached } from "@/hooks/useBottomReached";
 
-const Playlist = ({ playlist }) => {
+const Playlist = ({ id }) => {
+ 
   const token = getCookie("access_token");
 
   const isBottomReached = useBottomReached();
 
   const [colorData, setColorData] = useState(null);
   const [playlistData, setPlaylistData] = useState(null);
-  const [moreSongs, setMoreSongs] = useState(null);
+  const [playlistDetail, setPlaylistDetail] = useState(null)
+  const [next, setNext] = useState(null)
 
   const fetchMoreSongs = async (url) => {
     const result = await axios.get(url, {
@@ -29,15 +32,28 @@ const Playlist = ({ playlist }) => {
     return result.data;
   };
 
+  const getData = async () => {
+    try {
+      const data = await spotifyApi.getPlaylistTracks(id)
+      const details = await spotifyApi.getPlaylist(id)
+      setPlaylistData(data?.items);
+      setPlaylistDetail(details)
+      setNext(data?.next)
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
   useEffect(() => {
-    setPlaylistData(JSON.parse(playlist.value));
+    getData()
   }, []);
 
   useEffect(() => {
-    if (playlistData?.tracks.next && moreSongs === null) {
+    if (next) {
       const fetchMore = async () => {
-        const moreSongs = await fetchMoreSongs(playlistData?.tracks.next);
-        setMoreSongs(moreSongs);
+        const moreSongs = await fetchMoreSongs(next);
+        setNext(moreSongs.next)
+        setPlaylistData(prev=> [...prev,...moreSongs.items])
       };
       fetchMore();
     }
@@ -46,7 +62,7 @@ const Playlist = ({ playlist }) => {
   useEffect(() => {
     const fetchColor = async () => {
       try {
-        const data = await fetchColorDom(playlistData.images[0].url);
+        const data = await fetchColorDom(playlistDetail.images[0].url);
         setColorData(data);
       } catch (error) {
         console.error("Failed to fetch color data:", error);
@@ -54,7 +70,8 @@ const Playlist = ({ playlist }) => {
     };
 
     fetchColor();
-  }, [playlistData]);
+  }, [playlistDetail]);
+
 
   return (
     <>
@@ -69,8 +86,8 @@ const Playlist = ({ playlist }) => {
           <div className="relative -z-10 h-full w-full shrink-0 overflow-hidden">
             <Image
               fill
-              src={playlistData?.images[0].url}
-              alt={playlistData?.name}
+              src={playlistDetail?.images[0].url}
+              alt={playlistDetail?.name}
               className="unset | object-cover"
               placeholder="blur"
               blurDataURL={blurhash}
@@ -78,17 +95,16 @@ const Playlist = ({ playlist }) => {
           </div>
         </div>
         <div className="z-20 -mt-10 -translate-y-full px-4">
-          <h1 className="text-xl font-bold">{playlistData?.name}</h1>
+          <h1 className="text-xl font-bold">{playlistDetail?.name}</h1>
           <h3
             className="text-sm"
-            dangerouslySetInnerHTML={{ __html: playlistData?.description }}
+            dangerouslySetInnerHTML={{ __html: playlistDetail?.description }}
           ></h3>
           <p className="mt-2 text-xs text-gray-400">
-            {playlistData?.tracks.total} tracks
+            {playlistDetail?.tracks.total} tracks
           </p>
         </div>
-        <PlaylistItem items={playlistData?.tracks.items} />
-        <PlaylistItem items={moreSongs?.items} />
+        <PlaylistItem items={playlistData} />
       </>
     </>
   );

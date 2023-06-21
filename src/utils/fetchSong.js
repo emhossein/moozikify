@@ -20,7 +20,6 @@ const fetchSong = async (name, artist) => {
       }
     );
 
-    console.log(randomApiKey()); 
     
     if (!soundcloudUrlResponse.ok) {
       throw new Error("Failed to retrieve SoundCloud URL");

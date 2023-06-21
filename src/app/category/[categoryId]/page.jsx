@@ -3,7 +3,7 @@ import React from "react";
 
 const page = ({ params }) => {
   return (
-    <div>
+    <div className="pb-52">
       <Category id={params.categoryId} />
     </div>
   );

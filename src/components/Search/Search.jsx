@@ -38,7 +38,7 @@ const Search = () => {
     }
   }, [searched]);
 
-  console.log(searchResult);
+ 
 
   return (
     <div>

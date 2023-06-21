@@ -47,7 +47,7 @@ const PlaylistItem = ({ items }) => {
                 <Image
                   fill
                   src={
-                    item.track.album.images[item.track.album.images.length - 1]
+                    item?.track.album.images[item.track.album.images.length - 1]
                       .url
                   }
                   alt={item.track.name}
@@ -73,7 +73,7 @@ const PlaylistItem = ({ items }) => {
             {songIndex === index &&
             songList.length &&
             songData &&
-            songData?.result.title.includes(songList[songIndex].name) ? (
+            songList[songIndex].name === item.track.name ? (
               <MusicBarIcons isPLaying={isPlaying} />
             ) : null}
             <p className="self-center text-sm text-neutral-400">
