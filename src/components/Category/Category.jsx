@@ -14,12 +14,11 @@ const Category = ({ id }) => {
   const isBottomReached = useBottomReached();
 
   const [playlists, setPlaylists] = useState(null);
-  const [next, setNext] = useState(null)
+  const [next, setNext] = useState(null);
 
   const getData = async () => {
     try {
       const categoryPlaylists = await spotifyApi.getCategoryPlaylists(id);
-      console.log(categoryPlaylists);
 
       setPlaylists(categoryPlaylists.playlists.items);
       setNext(categoryPlaylists.playlists.next);
@@ -46,14 +45,13 @@ const Category = ({ id }) => {
     if (next) {
       const fetchMore = async () => {
         const morePlaylist = await fetchMorePlaylist(next);
-        console.log(morePlaylist);
-        setNext(morePlaylist.playlists.next)
-        setPlaylists(prev=> [...prev,...morePlaylist.playlists.items])
+
+        setNext(morePlaylist.playlists.next);
+        setPlaylists((prev) => [...prev, ...morePlaylist.playlists.items]);
       };
       fetchMore();
     }
   }, [isBottomReached]);
-
 
   return (
     <div className="p-2">

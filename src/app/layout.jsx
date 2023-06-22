@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
 import Head from "@/components/Head";
 import Navbar from "@/components/Navbar/Navbar";
 import Player from "@/components/Player/Player";
@@ -33,11 +33,5 @@ function RootLayout({ children }) {
     </html>
   );
 }
-
-export const metadata = {
-  icons: {
-    icon: "/public/favicon.ico",
-  },
-};
 
 export default RootLayout;

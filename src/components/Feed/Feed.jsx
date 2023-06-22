@@ -4,14 +4,19 @@ import { useEffect, useState } from "react";
 
 import CategoriesItem from "./CategoriesItem";
 import FeedItem from "./FeedItem";
+import Image from "next/image";
 import RecommendationFeed from "./RecommendationFeed";
 import { getCookie } from "cookies-next";
+import logo from "../../../public/Spotify-logo-dark.png";
 import { spotifyApi } from "@/utils/spotify";
+import stateOfDay from "@/utils/stateOfDay";
 import { useDataStore } from "@/zustand/store";
 
 const Feed = ({ newReleases, featured, topArtists, categories }) => {
   const token = getCookie("access_token");
   const { user, recommendations } = useDataStore((state) => state);
+
+  const greetings = stateOfDay() + ` ${user?.display_name}`;
 
   const [category, setCategory] = useState(null);
   const [newAlbums, setNewAlbums] = useState(null);
@@ -99,6 +104,12 @@ const Feed = ({ newReleases, featured, topArtists, categories }) => {
 
   return (
     <div className="w-full overflow-hidden">
+      <div className="flex flex-col space-y-1">
+        <div className="mt-1 h-10 w-fit self-center">
+          <Image alt={user.display_name} src={logo} fill className="unset" />
+        </div>
+        <h1 className="self-center px-2 text-xl font-semibold">{greetings}</h1>
+      </div>
       <div className="pl-2">
         <FeedItem
           items={featuredPlaylist?.playlists?.items}

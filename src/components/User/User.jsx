@@ -16,7 +16,7 @@ const User = ({ token }) => {
         const user = await spotifyApi.getMe();
         useDataStore.setState({ user, token });
       } catch (error) {
-        console.log("An error occurred:", error);
+        console.error("An error occurred:", error);
         const errorResponse = JSON.parse(error.response);
         if (errorResponse.error.status === 401) {
           router.push("/login");

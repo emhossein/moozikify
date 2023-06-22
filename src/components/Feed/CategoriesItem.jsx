@@ -10,7 +10,7 @@ const CategoriesItem = ({ items }) => {
           <h1 className="my-2 text-lg font-semibold">
             Let&apos;s listen to a new song
           </h1>
-          <div className="flex flex-wrap items-center justify-center space-x-2 space-y-2">
+          <div className="flex flex-wrap items-center justify-start space-x-2 space-y-2">
             {items?.map((item) => (
               <Link
                 title={item.name}

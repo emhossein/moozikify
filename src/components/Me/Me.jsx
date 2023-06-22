@@ -33,6 +33,7 @@ const Me = ({ user, colorData }) => {
 
     const getData = async () => {
       const history = await spotifyApi.getPlaylist(id);
+
       const [duplicate] = history.tracks.items
         .map((item) => item.track.id)
         .filter(

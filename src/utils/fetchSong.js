@@ -20,14 +20,12 @@ const fetchSong = async (name, artist) => {
       }
     );
 
-    
     if (!soundcloudUrlResponse.ok) {
       throw new Error("Failed to retrieve SoundCloud URL");
     }
-    
+
     const soundcloudUrl = await soundcloudUrlResponse.json();
-    
-    
+
     const downloadSong = await fetch(
       `https://one-api.ir/soundcloud/?token=${process.env.API_KEY}&action=download&link=${soundcloudUrl.tracks[0].data.url}`
     );
@@ -38,8 +36,7 @@ const fetchSong = async (name, artist) => {
 
     return await downloadSong.json();
   } catch (error) {
-   
-    console.log("An error occurred during the fetchSong operation:", error);
+    console.error("An error occurred during the fetchSong operation:", error);
     throw error;
   }
 };

@@ -11,7 +11,7 @@ import { spotifyApi } from "@/utils/spotify";
 import { useDataStore } from "@/zustand/store";
 
 const RecommendationFeed = ({ items, title }) => {
-  const { songIndex, songList } = useDataStore((state) => state);
+  const { songIndex, songList, isPlaying } = useDataStore((state) => state);
 
   const [historyId, setHistoryId] = useState("");
 
@@ -65,7 +65,8 @@ const RecommendationFeed = ({ items, title }) => {
                 />
                 <div className="absolute -bottom-2 right-1 z-10 rounded-full">
                   {songList.length &&
-                  songList?.[songIndex]?.name === item.name ? (
+                  songList?.[songIndex]?.name === item.name &&
+                  !isPlaying ? (
                     <PauseIcon fill="#1DB954" />
                   ) : (
                     <PlayIcon fill="#1DB954" />
