@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-import Me from "@/components/Me/Me";
+import Me from "../../components/Me/Me";
 import { fetchColorDom } from "@/utils/fetchColorDom";
 import { useDataStore } from "@/zustand/store";
 

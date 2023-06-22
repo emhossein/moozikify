@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 
-import { SearchIcon } from "../Icons";
 import SearchResults from "./SearchResults";
 import { getCookie } from "cookies-next";
 import { spotifyApi } from "@/utils/spotify";
@@ -37,8 +36,6 @@ const Search = () => {
       useDataStore.setState({ searchTerm: searched });
     }
   }, [searched]);
-
- 
 
   return (
     <div>

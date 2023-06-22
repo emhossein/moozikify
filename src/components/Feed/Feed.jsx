@@ -106,7 +106,7 @@ const Feed = ({ newReleases, featured, topArtists, categories }) => {
     <div className="w-full overflow-hidden">
       <div className="flex flex-col space-y-1">
         <div className="mt-1 h-10 w-fit self-center">
-          <Image alt={user.display_name} src={logo} fill className="unset" />
+          <Image alt={user?.display_name} src={logo} fill className="unset" />
         </div>
         <h1 className="self-center px-2 text-xl font-semibold">{greetings}</h1>
       </div>
