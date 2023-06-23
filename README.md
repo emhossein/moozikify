@@ -1,34 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Music Streaming App
 
-## Getting Started
+This is a music streaming app that allows users to listen to their favorite songs, discover new music, and create playlists. The app is built using the Spotify API and provides a user-friendly interface for seamless navigation and playback.
 
-First, run the development server:
+## Version History
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+### v.0.0.1 - Top Hits Showing & Player Functionality
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Users can view and play the current top hits.
+- Initial implementation of basic player controls.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### v.0.0.2 - Change to Spotify API Library
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Switched to the Spotify API library for improved functionality and integration.
+- Ensured compatibility with the latest Spotify API version.
 
-## Learn More
+### v.0.0.3 - Better UI
 
-To learn more about Next.js, take a look at the following resources:
+- Revamped the user interface design for a more visually appealing and intuitive experience.
+- Improved layout and styling for easier navigation and interaction.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### v.0.0.4 - Search Functionality
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Implemented search functionality, allowing users to search for specific songs, albums, or artists.
+- Enhanced the user experience by enabling users to find their favorite music easily.
 
-## Deploy on Vercel
+### v.0.0.5 - Album and Artist Page
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Added dedicated pages for albums and artists.
+- Users can now access detailed information about albums and artists, along with related songs.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### v.1.0.0 - Small Refactoring and Shuffle and Loop
+
+- Performed code refactoring for improved performance and maintainability.
+- Introduced shuffle and loop options for song playback, providing users with more control over their music listening experience.
