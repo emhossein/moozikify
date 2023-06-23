@@ -4,36 +4,28 @@ import { cookies } from "next/headers";
 export default async function Home() {
   const token = cookies().get("access_token");
 
-  const newReleases = await fetch(
-    "https://api.spotify.com/v1/browse/new-releases",
-    {
-      headers: {
-        Authorization: "Bearer " + token?.value,
-      },
-    }
-  ).catch((err) => console.error("newReleases ", err));
+  const url = "https://api.spotify.com/v1";
 
-  const featured = await fetch(
-    "https://api.spotify.com/v1/browse/featured-playlists?country=US",
-    {
-      headers: {
-        Authorization: "Bearer " + token?.value,
-      },
-    }
-  ).catch((err) => console.error("featured ", err));
+  const headers = {
+    Authorization: "Bearer " + token?.value,
+  };
 
-  const topArtists = await fetch("https://api.spotify.com/v1/me/top/artists", {
-    headers: {
-      Authorization: "Bearer " + token?.value,
-    },
+  const newReleases = await fetch(`${url}/browse/new-releases`, {
+    headers,
+  }).catch((err) => console.error("newReleases ", err));
+
+  const featured = await fetch(`${url}/browse/featured-playlists?country=US`, {
+    headers,
+  }).catch((err) => console.error("featured ", err));
+
+  const topArtists = await fetch(`${url}/me/top/artists`, {
+    headers,
   }).catch((err) => console.error("top artists ", err));
 
   const categories = await fetch(
-    "https://api.spotify.com/v1/browse/categories?country=US&limit=12",
+    `${url}/browse/categories?country=US&limit=12`,
     {
-      headers: {
-        Authorization: "Bearer " + token?.value,
-      },
+      headers,
     }
   ).catch((err) => console.error("categories ", err));
 

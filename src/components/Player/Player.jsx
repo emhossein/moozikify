@@ -3,8 +3,8 @@
 import {
   PauseIcon,
   PlayIcon,
-  SkipBackwardIcon,
-  SkipForwardIcon,
+  RepeatIcon,
+  ShuffleIcon,
   SkipNextIcon,
   SkipPreviousIcon,
 } from "../Icons";
@@ -25,6 +25,8 @@ const Player = () => {
   const audioRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [historyId, setHistoryId] = useState("");
+  const [repeat, setRepeat] = useState(false);
+  const [shuffle, setShuffle] = useState(false);
 
   const handlePlay = () => {
     audioRef.current.play();
@@ -99,7 +101,12 @@ const Player = () => {
 
     if (audioElement) {
       const handleEnded = () => {
-        handleSongChange("next", songIndex, songList, useDataStore.setState);
+        handleSongChange(
+          shuffle ? "random" : "next",
+          songIndex,
+          songList,
+          useDataStore.setState
+        );
       };
 
       const handleError = () => {
@@ -145,6 +152,7 @@ const Player = () => {
             type="audio/mpeg"
             controls
             className="hidden"
+            loop={repeat}
           />
 
           <div className="flex items-center space-x-2 ">
@@ -181,8 +189,8 @@ const Player = () => {
                 >
                   <SkipPreviousIcon />
                 </button>
-                <button onClick={() => handleSetTime(-15)}>
-                  <SkipBackwardIcon />
+                <button onClick={() => setShuffle(!shuffle)}>
+                  <ShuffleIcon fill={shuffle ? "#1DB954" : "white"} />
                 </button>
                 {isPlaying ? (
                   <button onClick={handlePlay}>
@@ -193,13 +201,13 @@ const Player = () => {
                     <PauseIcon />
                   </button>
                 )}
-                <button onClick={() => handleSetTime(15)}>
-                  <SkipForwardIcon />
+                <button onClick={() => setRepeat(!repeat)}>
+                  <RepeatIcon fill={repeat ? "#1DB954" : "white"} />
                 </button>
                 <button
                   onClick={() =>
                     handleSongChange(
-                      "next",
+                      shuffle ? "random" : "next",
                       songIndex,
                       songList,
                       useDataStore.setState

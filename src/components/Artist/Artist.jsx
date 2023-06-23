@@ -7,6 +7,7 @@ import Image from "next/image";
 import RecommendationFeed from "../Feed/RecommendationFeed";
 import blurhash from "@/utils/blurhash";
 import { fetchColorDom } from "@/utils/fetchColorDom";
+import formatNumber from "@/utils/numberFormat";
 import { spotifyApi } from "@/utils/spotify";
 
 const Artist = ({ id }) => {
@@ -74,7 +75,7 @@ const Artist = ({ id }) => {
           <div className="z-20 -mt-10 -translate-y-full px-4">
             <h1 className="text-xl font-bold">{artistDetail?.name}</h1>
             <p className="mt-2 text-xs text-gray-400">
-              {artistDetail?.followers.total} followers
+              {formatNumber(artistDetail?.followers.total)} followers
             </p>
           </div>
           <div className="pl-2">

@@ -10,7 +10,9 @@ import ChangeThemeIcon from "./ChangeThemeIcon";
 import GenreIcon from "./GenreIcon";
 import HomeIcon from "./HomeIcon";
 import MusicBarIcons from "./MusicBarIcons";
+import RepeatIcon from "./RepeatIcon";
 import SearchIcon from "./SearchIcon";
+import ShuffleIcon from "./ShuffleIcon";
 import UserIcon from "./UserIcon";
 
 export {
@@ -26,4 +28,6 @@ export {
   SkipBackwardIcon,
   UserIcon,
   MusicBarIcons,
+  ShuffleIcon,
+  RepeatIcon,
 };
